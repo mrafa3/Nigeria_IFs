@@ -1,0 +1,62 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+
+```{r read_data, include=TRUE}
+df_concord <- read_csv('.//data/Nigeria_concordance.csv')
+
+files <- list.files(path = ".//data/satellite pop", pattern = "*.csv", full.names = T)
+
+tbl <- sapply(files, read_csv, simplify=FALSE) %>% 
+  bind_rows(.id = "id") %>% 
+  rename('state' = 'X1') %>% 
+  mutate(id =  str_sub(id, end=-5)) %>% 
+  mutate(year = as.numeric(str_sub(id, -4, -1)))
+```
+
+```{r df_pop, include=TRUE}
+(df_pop <- tbl %>% 
+  select(state, year, sum) %>% 
+  mutate(sum = sum / 1000000) %>% 
+  spread(year, sum))
+```
+
+```{r}
+(df_pop_ifs <- df_pop %>% 
+  left_join(x=.,
+            y=df_concord,
+            by=c('state' = 'Landscan_states')) %>% 
+  select(-state) %>% 
+  select(Country, FIPS_CODE, everything()))
+```
+
+```{r write_population, include=TRUE}
+write_csv(df_pop_ifs, './/data_output/population_landscan_2000_2017.csv')
+```
+
+```{r}
+df_pop_hunthou <- tbl %>% 
+  select(state, year, sum) %>% 
+  mutate(sum = sum / 100000)
+
+save(df_pop_hunthou, file = './/data_output/population_hunthou.Rdata')
+```
+
+
+
+# Comparison
+
+```{r}
+tbl %>% 
+  select(state, year, sum) %>% 
+  mutate(sum = sum / 1000000) %>% 
+  group_by(year) %>% 
+  summarise(population = sum(sum, na.rm = TRUE))
+```
+

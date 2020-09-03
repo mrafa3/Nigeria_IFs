@@ -1,0 +1,41 @@
+---
+title: "Nigeria: Agriculture estimates for IFs"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r read_agprod, include=TRUE}
+df_agprod <- readxl::read_xlsx('.//data/ObservationData_AgProd.xlsx', sheet = 'ObservationData') %>% 
+  rename('state' = 'States Name',
+         'indicator' = 'Indicators Name',
+         'indicator_long' = 'Indicators - FULLNAME') %>% 
+  select(state, indicator, indicator_long, 
+         '2004', '2005', '2006') %>% 
+  filter(!is.na(indicator)) %>% 
+  gather(year, value, 4:6) %>% 
+  group_by(state, year) %>% 
+  summarise(crop_prod = sum(value, na.rm = TRUE)) %>% 
+  spread(year, crop_prod)
+
+#write_csv(df_agprod, './/data_output/AgCropProduction.csv')
+```
+
+```{r}
+df_agarea <- readxl::read_xlsx('.//data/ObservationData_AgArea.xlsx', sheet = 'ObservationData') %>% 
+  rename('state' = 'States Name',
+         'indicator' = 'Indicators Name',
+         'indicator_long' = 'Indicators - FULLNAME') %>% 
+  select(state, indicator, indicator_long, 
+         '2004', '2005', '2006') %>% 
+  filter(!is.na(indicator)) %>% 
+  gather(year, value, 4:6) %>% 
+  group_by(state, year) %>% 
+  summarise(area_planted = sum(value, na.rm = TRUE)) %>% 
+  spread(year, area_planted)
+
+#write_csv(df_agarea, './/data_output/AgCropArea.csv')
+```
+

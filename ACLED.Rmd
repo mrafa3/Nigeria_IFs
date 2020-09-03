@@ -1,0 +1,70 @@
+---
+title: "ACLED"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+```{r load_data, include=TRUE}
+df_acled <- read_csv('.//data/1997-01-01-2020-04-24-Nigeria.csv')
+df_concord <- read_csv('.//data/Nigeria_concordance.csv')
+```
+
+```{r glimpse_df, include=TRUE}
+df_acled %>% 
+  glimpse()
+```
+
+```{r summary_df, include=TRUE}
+df_acled %>% summary()
+```
+
+```{r make_df, include=TRUE}
+(df_soc_viol <- df_acled %>% 
+  group_by(admin1, year) %>% 
+  summarise(sum_fatalities = sum(fatalities, na.rm = TRUE)) %>% 
+  filter(year != 2020) %>% 
+  #mutate(sum_fatalities = ifelse(is.na(sum_fatalities), 0, sum_fatalities)) %>% 
+  spread(year, sum_fatalities))
+```
+
+
+```{r}
+load('.//data_output/population_hunthou.Rdata')
+```
+
+```{r}
+(df_soc_viol_ifs <- df_acled %>% 
+  mutate(admin1 = ifelse(admin1 == 'Nasarawa', 'Nassarawa', admin1)) %>% 
+  group_by(admin1, year) %>% 
+  summarise(sum_fatalities = sum(fatalities, na.rm = TRUE)) %>% 
+  left_join(x=.,
+            y=df_pop_hunthou,
+            by=c('admin1' = 'state', 'year')) %>% 
+  mutate(deaths_per_hunthou = ifelse(is.na(sum), NA, round(sum_fatalities / sum, 3))) %>% 
+  select(admin1, year, deaths_per_hunthou) %>% 
+  filter(!is.na(deaths_per_hunthou)) %>% 
+  #arrange(-deaths_per_hunthou)
+  spread(year, deaths_per_hunthou) %>% 
+  left_join(x=.,
+            y=df_concord,
+            by=c('admin1' = 'Country')) %>% 
+  select(-Landscan_states) %>% 
+  select(admin1, FIPS_CODE, everything()))
+```
+
+```{r write_data, include=TRUE}
+write_csv(df_soc_viol_ifs, path = './/data_output/ViolencePoliticalConflictTerror.csv')
+```
+
+```{r concord_data, include=TRUE}
+df_soc_viol_cnt <- df_concord %>% 
+  left_join(x=.,
+            y=df_soc_viol,
+            by=c('Country' = 'admin1'))
+```
+
+
+

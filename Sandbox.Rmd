@@ -1,0 +1,39 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(rvest)
+```
+
+```{r get_area, include=TRUE}
+url <- "https://en.wikipedia.org/wiki/List_of_Nigerian_states_by_area"
+
+df_area <- 
+  url %>% 
+  read_html() %>% 
+  html_nodes(xpath='//*[@id="mw-content-text"]/div/table[1]') %>% 
+  html_table()
+
+df_area <- data.frame(df_area)
+
+df_area <- df_area %>% 
+  separate(State, into = c('name', 'state'), sep = " State")
+
+df_area <- df_area %>% 
+  select(2, 4)
+
+writexl::write_xlsx(df_area, './/data_output/nigeria_area.xlsx')
+```
+
+
+
+
+# Gini 
+
+```{r read_gini, include=TRUE}
+df_gini <- readxl::read_xlsx('.//data/Gini.xlsx', sheet = 'gini')
+```
+
