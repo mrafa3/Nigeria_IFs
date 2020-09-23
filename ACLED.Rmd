@@ -25,6 +25,8 @@ df_acled %>%
   spread(year, sum_fatalities))
 ```
 
+Using Landscan population estimates to calculate the mortality rate. See the Landscan notebook in this repo for the data and code.  
+
 ```{r read_population, include=TRUE}
 load('.//data/population_hunthou.Rdata')
 ```
