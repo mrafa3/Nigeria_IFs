@@ -28,12 +28,8 @@ df_area <- df_area %>%
 writexl::write_xlsx(df_area, './/data_output/nigeria_area.xlsx')
 ```
 
-
-
-
 # Gini 
 
 ```{r read_gini, include=TRUE}
 df_gini <- readxl::read_xlsx('.//data/Gini.xlsx', sheet = 'gini')
 ```
-
