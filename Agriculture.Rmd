@@ -3,11 +3,11 @@ title: "Nigeria: Agriculture estimates for IFs"
 output: html_notebook
 ---
 
-```{r}
+```{r setup, include=TRUE}
 library(tidyverse)
 ```
 
-```{r read_agprod, include=TRUE}
+```{r df_agprod, include=TRUE}
 df_agprod <- readxl::read_xlsx('.//data/ObservationData_AgProd.xlsx', sheet = 'ObservationData') %>% 
   rename('state' = 'States Name',
          'indicator' = 'Indicators Name',
@@ -23,7 +23,7 @@ df_agprod <- readxl::read_xlsx('.//data/ObservationData_AgProd.xlsx', sheet = 'O
 #write_csv(df_agprod, './/data_output/AgCropProduction.csv')
 ```
 
-```{r}
+```{r df_agarea, include=TRUE}
 df_agarea <- readxl::read_xlsx('.//data/ObservationData_AgArea.xlsx', sheet = 'ObservationData') %>% 
   rename('state' = 'States Name',
          'indicator' = 'Indicators Name',
