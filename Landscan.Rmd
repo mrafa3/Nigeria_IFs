@@ -1,12 +1,11 @@
 ---
-title: "R Notebook"
+title: "Landscan data"
 output: html_notebook
 ---
 
 ```{r setup, include=FALSE}
 library(tidyverse)
 ```
-
 
 ```{r read_data, include=TRUE}
 df_concord <- read_csv('.//data/Nigeria_concordance.csv')
@@ -27,7 +26,7 @@ tbl <- sapply(files, read_csv, simplify=FALSE) %>%
   spread(year, sum))
 ```
 
-```{r}
+```{r df_pop_ifs, include=TRUE}
 (df_pop_ifs <- df_pop %>% 
   left_join(x=.,
             y=df_concord,
@@ -40,23 +39,10 @@ tbl <- sapply(files, read_csv, simplify=FALSE) %>%
 write_csv(df_pop_ifs, './/data_output/population_landscan_2000_2017.csv')
 ```
 
-```{r}
+```{r df_pop_hunthou, include=TRUE}
 df_pop_hunthou <- tbl %>% 
   select(state, year, sum) %>% 
   mutate(sum = sum / 100000)
 
 save(df_pop_hunthou, file = './/data_output/population_hunthou.Rdata')
 ```
-
-
-
-# Comparison
-
-```{r}
-tbl %>% 
-  select(state, year, sum) %>% 
-  mutate(sum = sum / 1000000) %>% 
-  group_by(year) %>% 
-  summarise(population = sum(sum, na.rm = TRUE))
-```
-
