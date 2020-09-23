@@ -17,25 +17,19 @@ df_acled %>%
   glimpse()
 ```
 
-```{r summary_df, include=TRUE}
-df_acled %>% summary()
-```
-
 ```{r make_df, include=TRUE}
 (df_soc_viol <- df_acled %>% 
   group_by(admin1, year) %>% 
   summarise(sum_fatalities = sum(fatalities, na.rm = TRUE)) %>% 
   filter(year != 2020) %>% 
-  #mutate(sum_fatalities = ifelse(is.na(sum_fatalities), 0, sum_fatalities)) %>% 
   spread(year, sum_fatalities))
 ```
 
-
-```{r}
-load('.//data_output/population_hunthou.Rdata')
+```{r read_population, include=TRUE}
+load('.//data/population_hunthou.Rdata')
 ```
 
-```{r}
+```{r df_soc_viol_ifs, include=TRUE}
 (df_soc_viol_ifs <- df_acled %>% 
   mutate(admin1 = ifelse(admin1 == 'Nasarawa', 'Nassarawa', admin1)) %>% 
   group_by(admin1, year) %>% 
@@ -46,7 +40,6 @@ load('.//data_output/population_hunthou.Rdata')
   mutate(deaths_per_hunthou = ifelse(is.na(sum), NA, round(sum_fatalities / sum, 3))) %>% 
   select(admin1, year, deaths_per_hunthou) %>% 
   filter(!is.na(deaths_per_hunthou)) %>% 
-  #arrange(-deaths_per_hunthou)
   spread(year, deaths_per_hunthou) %>% 
   left_join(x=.,
             y=df_concord,
@@ -65,6 +58,3 @@ df_soc_viol_cnt <- df_concord %>%
             y=df_soc_viol,
             by=c('Country' = 'admin1'))
 ```
-
-
-
