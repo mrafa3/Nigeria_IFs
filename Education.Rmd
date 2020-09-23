@@ -3,12 +3,11 @@ title: "Education"
 output: html_notebook
 ---
 
-```{r}
+```{r setup, include=TRUE}
 library(tidyverse)
-library(imputeTS)
 ```
 
-```{r read_wash, include=TRUE}
+```{r df_educ, include=TRUE}
 df_educ <- readxl::read_xlsx('.//data/netenrolment sec _ pri.xlsx', sheet = 'ObservationData') %>% 
   rename('state' = 'States Name',
          'indicator' = 'Indicators Name') %>%  
@@ -20,43 +19,31 @@ df_educ %>%
   write.csv(., './/data_output/educ_stats_2007.csv')
 ```
 
-# Round 2: DHS
-
-```{r}
+```{r df_pri_educ_dhs, include=TRUE}
 df_pri_educ_dhs <-readxl::read_xlsx('.//data/master_education_NGA.xlsx', sheet = 'primary') %>% 
   gather(variable, value, 4:9) %>% 
   spread(year, value)
 ```
 
-```{r}
+```{r df_sec_educ_dhs, include=TRUE}
 df_sec_educ_dhs <-readxl::read_xlsx('.//data/master_education_NGA.xlsx', sheet = 'secondary') %>% 
   gather(variable, value, 4:9) %>% 
   spread(year, value)
 ```
 
-```{r}
-#df_DHS_educ <- bind_rows(df_pri_educ_dhs,
- #                        df_sec_educ_dhs) %>% 
-  #gather(year, value, 4:6) %>% 
-  #group_by(state, variable)
-  
-#df_DHS_educ$value <- na_interpolation(df_DHS_educ$value, option='linear')
-```
-
-
-
-```{r}
+```{r bind_education, include=TRUE}
 bind_rows(df_pri_educ_dhs,
           df_sec_educ_dhs) %>% 
   group_split(variable) -> list_of_dfs
 
 list_of_dfs %>%
-  purrr::map(~pull(.,variable)) %>% # Pull out variable
-  #purrr::map(~as.character(.)) %>% # Convert factor to character
+  purrr::map(~pull(.,variable)) %>% 
   purrr::map(~unique(.)) -> names(list_of_dfs)
 
 names(list_of_dfs)
+```
 
+```{r write_education, include=TRUE}
 list_of_dfs %>%
   writexl::write_xlsx(path = ".//data_output/DHS_education_NGA.xlsx")
 ```

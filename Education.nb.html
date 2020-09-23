@@ -1801,8 +1801,6 @@ df_educ %&gt;%
 &lt;!-- rnb-text-begin --&gt;
 
 
-# Round 2: DHS
-
 
 &lt;!-- rnb-text-end --&gt;
 
@@ -1830,40 +1828,8 @@ df_pri_educ_dhs &lt;-readxl::read_xlsx(&#39;.//data/master_education_NGA.xlsx&#3
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZGZfREhTX2VkdWMkdmFsdWUgPC0gbmEuaW50ZXJwb2xhdGlvbihkZl9ESFNfZWR1YyR2YWx1ZSwgb3B0aW9uPSdsaW5lYXInKVxuXG5gYGBcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYmluZF9yb3dzKGRmX3ByaV9lZHVjX2RocyxcbiAgICAgICAgICBkZl9zZWNfZWR1Y19kaHMpICU+JSBcbiAgZ3JvdXBfc3BsaXQodmFyaWFibGUpIC0+IGxpc3Rfb2ZfZGZzXG5cbmxpc3Rfb2ZfZGZzICU+JVxuICBwdXJycjo6bWFwKH5wdWxsKC4sdmFyaWFibGUpKSAlPiUgIyBQdWxsIG91dCB2YXJpYWJsZVxuICAjcHVycnI6Om1hcCh+YXMuY2hhcmFjdGVyKC4pKSAlPiUgIyBDb252ZXJ0IGZhY3RvciB0byBjaGFyYWN0ZXJcbiAgcHVycnI6Om1hcCh+dW5pcXVlKC4pKSAtPiBuYW1lcyhsaXN0X29mX2RmcylcblxubmFtZXMobGlzdF9vZl9kZnMpXG5cbmxpc3Rfb2ZfZGZzICU+JVxuICB3cml0ZXhsOjp3cml0ZV94bHN4KHBhdGggPSBcXC4vL2RhdGFfb3V0cHV0L0RIU19lZHVjYXRpb25fTkdBLnhsc3hcXClcbmBgYFxuYGBgIn0= -->
 <pre class="r"><code>```r
-df_DHS_educ$value &lt;- na.interpolation(df_DHS_educ$value, option=&#39;linear&#39;)
-</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoibmEuaW50ZXJwb2xhdGlvbiB3aWxsIHJlcGxhY2VkIGJ5IG5hX2ludGVycG9sYXRpb24uXG4gICAgICAgICAgIEZ1bmN0aW9uYWxpdHkgc3RheXMgdGhlIHNhbWUuXG4gICAgICAgICAgIFRoZSBuZXcgZnVuY3Rpb24gbmFtZSBiZXR0ZXIgZml0cyBtb2Rlcm4gUiBjb2RlIHN0eWxlIGd1aWRlbGluZXMuXG4gICAgICAgICAgIFBsZWFzZSBhZGp1c3QgeW91ciBjb2RlIGFjY29yZGluZ2x5LlxuIn0= --&gt;
-</code></pre>
-<p>na.interpolation will replaced by na_interpolation. Functionality stays the same. The new function name better fits modern R code style guidelines. Please adjust your code accordingly.</p>
-<pre><code>
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-
-
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYmluZF9yb3dzKGRmX3ByaV9lZHVjX2RocyxcbiAgICAgICAgICBkZl9zZWNfZWR1Y19kaHMpICU+JSBcbiAgZ3JvdXBfc3BsaXQodmFyaWFibGUpIC0+IGxpc3Rfb2ZfZGZzXG5cbmxpc3Rfb2ZfZGZzICU+JVxuICBwdXJycjo6bWFwKH5wdWxsKC4sdmFyaWFibGUpKSAlPiUgIyBQdWxsIG91dCB2YXJpYWJsZVxuICAjcHVycnI6Om1hcCh+YXMuY2hhcmFjdGVyKC4pKSAlPiUgIyBDb252ZXJ0IGZhY3RvciB0byBjaGFyYWN0ZXJcbiAgcHVycnI6Om1hcCh+dW5pcXVlKC4pKSAtPiBuYW1lcyhsaXN0X29mX2RmcylcblxubmFtZXMobGlzdF9vZl9kZnMpXG5cbmxpc3Rfb2ZfZGZzICU+JVxuICB3cml0ZXhsOjp3cml0ZV94bHN4KHBhdGggPSBcXC4vL2RhdGFfb3V0cHV0L0RIU19lZHVjYXRpb25fTkdBLnhsc3hcXClcbmBgYFxuYGBgIn0= --&gt;
-
-```r
-```r
 bind_rows(df_pri_educ_dhs,
           df_sec_educ_dhs) %&gt;% 
   group_split(variable) -&gt; list_of_dfs
@@ -1877,13 +1843,33 @@ names(list_of_dfs)
 
 list_of_dfs %&gt;%
   writexl::write_xlsx(path = \.//data_output/DHS_education_NGA.xlsx\)</code></pre>
-<p>```</p>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlzdF9vZl9kZnMgJT4lXG4gIHdyaXRleGw6OndyaXRlX3hsc3gocGF0aCA9IFwiLi8vZGF0YV9vdXRwdXQvREhTX2VkdWNhdGlvbl9OR0EueGxzeFwiKVxuYGBgIn0= --&gt;
+
+```r
+list_of_dfs %&gt;%
+  writexl::write_xlsx(path = &quot;.//data_output/DHS_education_NGA.xlsx&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkVkdWNhdGlvbiINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCmBgYHtyfQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpsaWJyYXJ5KGltcHV0ZVRTKQ0KYGBgDQoNCmBgYHtyIHJlYWRfd2FzaCwgaW5jbHVkZT1UUlVFfQ0KZGZfZWR1YyA8LSByZWFkeGw6OnJlYWRfeGxzeCgnLi8vZGF0YS9uZXRlbnJvbG1lbnQgc2VjIF8gcHJpLnhsc3gnLCBzaGVldCA9ICdPYnNlcnZhdGlvbkRhdGEnKSAlPiUgDQogIHJlbmFtZSgnc3RhdGUnID0gJ1N0YXRlcyBOYW1lJywNCiAgICAgICAgICdpbmRpY2F0b3InID0gJ0luZGljYXRvcnMgTmFtZScpICU+JSAgDQogIHNlbGVjdChzdGF0ZSwgaW5kaWNhdG9yLCAnMjAwNycpICU+JSANCiAgZmlsdGVyKGNvbXBsZXRlLmNhc2VzKC4pKSAlPiUgDQogIHNwcmVhZChpbmRpY2F0b3IsIGAyMDA3YCkNCg0KZGZfZWR1YyAlPiUgDQogIHdyaXRlLmNzdiguLCAnLi8vZGF0YV9vdXRwdXQvZWR1Y19zdGF0c18yMDA3LmNzdicpDQpgYGANCg0KIyBSb3VuZCAyOiBESFMNCg0KYGBge3J9DQpkZl9wcmlfZWR1Y19kaHMgPC1yZWFkeGw6OnJlYWRfeGxzeCgnLi8vZGF0YS9tYXN0ZXJfZWR1Y2F0aW9uX05HQS54bHN4Jywgc2hlZXQgPSAncHJpbWFyeScpICU+JSANCiAgZ2F0aGVyKHZhcmlhYmxlLCB2YWx1ZSwgNDo5KSAlPiUgDQogIHNwcmVhZCh5ZWFyLCB2YWx1ZSkNCmBgYA0KDQpgYGB7cn0NCmRmX3NlY19lZHVjX2RocyA8LXJlYWR4bDo6cmVhZF94bHN4KCcuLy9kYXRhL21hc3Rlcl9lZHVjYXRpb25fTkdBLnhsc3gnLCBzaGVldCA9ICdzZWNvbmRhcnknKSAlPiUgDQogIGdhdGhlcih2YXJpYWJsZSwgdmFsdWUsIDQ6OSkgJT4lIA0KICBzcHJlYWQoeWVhciwgdmFsdWUpDQpgYGANCg0KYGBge3J9DQojZGZfREhTX2VkdWMgPC0gYmluZF9yb3dzKGRmX3ByaV9lZHVjX2RocywNCiAjICAgICAgICAgICAgICAgICAgICAgICAgZGZfc2VjX2VkdWNfZGhzKSAlPiUgDQogICNnYXRoZXIoeWVhciwgdmFsdWUsIDQ6NikgJT4lIA0KICAjZ3JvdXBfYnkoc3RhdGUsIHZhcmlhYmxlKQ0KICANCiNkZl9ESFNfZWR1YyR2YWx1ZSA8LSBuYV9pbnRlcnBvbGF0aW9uKGRmX0RIU19lZHVjJHZhbHVlLCBvcHRpb249J2xpbmVhcicpDQpgYGANCg0KDQoNCmBgYHtyfQ0KYmluZF9yb3dzKGRmX3ByaV9lZHVjX2RocywNCiAgICAgICAgICBkZl9zZWNfZWR1Y19kaHMpICU+JSANCiAgZ3JvdXBfc3BsaXQodmFyaWFibGUpIC0+IGxpc3Rfb2ZfZGZzDQoNCmxpc3Rfb2ZfZGZzICU+JQ0KICBwdXJycjo6bWFwKH5wdWxsKC4sdmFyaWFibGUpKSAlPiUgIyBQdWxsIG91dCB2YXJpYWJsZQ0KICAjcHVycnI6Om1hcCh+YXMuY2hhcmFjdGVyKC4pKSAlPiUgIyBDb252ZXJ0IGZhY3RvciB0byBjaGFyYWN0ZXINCiAgcHVycnI6Om1hcCh+dW5pcXVlKC4pKSAtPiBuYW1lcyhsaXN0X29mX2RmcykNCg0KbmFtZXMobGlzdF9vZl9kZnMpDQoNCmxpc3Rfb2ZfZGZzICU+JQ0KICB3cml0ZXhsOjp3cml0ZV94bHN4KHBhdGggPSAiLi8vZGF0YV9vdXRwdXQvREhTX2VkdWNhdGlvbl9OR0EueGxzeCIpDQpgYGANCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkVkdWNhdGlvbiINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPVRSVUV9DQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmBgYA0KDQpgYGB7ciBkZl9lZHVjLCBpbmNsdWRlPVRSVUV9DQpkZl9lZHVjIDwtIHJlYWR4bDo6cmVhZF94bHN4KCcuLy9kYXRhL25ldGVucm9sbWVudCBzZWMgXyBwcmkueGxzeCcsIHNoZWV0ID0gJ09ic2VydmF0aW9uRGF0YScpICU+JSANCiAgcmVuYW1lKCdzdGF0ZScgPSAnU3RhdGVzIE5hbWUnLA0KICAgICAgICAgJ2luZGljYXRvcicgPSAnSW5kaWNhdG9ycyBOYW1lJykgJT4lICANCiAgc2VsZWN0KHN0YXRlLCBpbmRpY2F0b3IsICcyMDA3JykgJT4lIA0KICBmaWx0ZXIoY29tcGxldGUuY2FzZXMoLikpICU+JSANCiAgc3ByZWFkKGluZGljYXRvciwgYDIwMDdgKQ0KDQpkZl9lZHVjICU+JSANCiAgd3JpdGUuY3N2KC4sICcuLy9kYXRhX291dHB1dC9lZHVjX3N0YXRzXzIwMDcuY3N2JykNCmBgYA0KDQpgYGB7ciBkZl9wcmlfZWR1Y19kaHMsIGluY2x1ZGU9VFJVRX0NCmRmX3ByaV9lZHVjX2RocyA8LXJlYWR4bDo6cmVhZF94bHN4KCcuLy9kYXRhL21hc3Rlcl9lZHVjYXRpb25fTkdBLnhsc3gnLCBzaGVldCA9ICdwcmltYXJ5JykgJT4lIA0KICBnYXRoZXIodmFyaWFibGUsIHZhbHVlLCA0OjkpICU+JSANCiAgc3ByZWFkKHllYXIsIHZhbHVlKQ0KYGBgDQoNCmBgYHtyIGRmX3NlY19lZHVjX2RocywgaW5jbHVkZT1UUlVFfQ0KZGZfc2VjX2VkdWNfZGhzIDwtcmVhZHhsOjpyZWFkX3hsc3goJy4vL2RhdGEvbWFzdGVyX2VkdWNhdGlvbl9OR0EueGxzeCcsIHNoZWV0ID0gJ3NlY29uZGFyeScpICU+JSANCiAgZ2F0aGVyKHZhcmlhYmxlLCB2YWx1ZSwgNDo5KSAlPiUgDQogIHNwcmVhZCh5ZWFyLCB2YWx1ZSkNCmBgYA0KDQpgYGB7ciBiaW5kX2VkdWNhdGlvbiwgaW5jbHVkZT1UUlVFfQ0KYmluZF9yb3dzKGRmX3ByaV9lZHVjX2RocywNCiAgICAgICAgICBkZl9zZWNfZWR1Y19kaHMpICU+JSANCiAgZ3JvdXBfc3BsaXQodmFyaWFibGUpIC0+IGxpc3Rfb2ZfZGZzDQoNCmxpc3Rfb2ZfZGZzICU+JQ0KICBwdXJycjo6bWFwKH5wdWxsKC4sdmFyaWFibGUpKSAlPiUgDQogIHB1cnJyOjptYXAofnVuaXF1ZSguKSkgLT4gbmFtZXMobGlzdF9vZl9kZnMpDQoNCm5hbWVzKGxpc3Rfb2ZfZGZzKQ0KYGBgDQoNCmBgYHtyIHdyaXRlX2VkdWNhdGlvbiwgaW5jbHVkZT1UUlVFfQ0KbGlzdF9vZl9kZnMgJT4lDQogIHdyaXRleGw6OndyaXRlX3hsc3gocGF0aCA9ICIuLy9kYXRhX291dHB1dC9ESFNfZWR1Y2F0aW9uX05HQS54bHN4IikNCmBgYA0KDQo=</div>
 
 
 
