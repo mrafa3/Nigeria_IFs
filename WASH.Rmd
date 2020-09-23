@@ -1,9 +1,9 @@
 ---
-title: "R Notebook"
+title: "Nigeria: WASH data"
 output: html_notebook
 ---
 
-```{r}
+```{r setup, include=TRUE}
 library(tidyverse)
 ```
 
@@ -20,20 +20,20 @@ df_wash <- readxl::read_xlsx('.//data/ObservationData_WASH.xlsx', sheet = 'Obser
   filter(complete.cases(.))
 ```
 
-```{r}
+```{r write_wash, include=TRUE}
 df_wash %>% 
   distinct(indicator, wash_type) %>% 
   write_csv(., './/data_output/wash_types.csv')
 ```
 
-```{r}
+```{r df_wash_2, include=TRUE}
 df_wash_2 <- df_wash %>% 
   left_join(x=.,
             y=readxl::read_xlsx('.//data/wash_mapping.xlsx'),
             by='indicator')
 ```
 
-```{r}
+```{r df_wash_3, include=TRUE}
 df_wash_3 <- df_wash_2 %>% 
   group_by(state,
            IFs_var, 
@@ -41,13 +41,7 @@ df_wash_3 <- df_wash_2 %>%
   summarise(`2009` = sum(`2009`, na.rm = TRUE))
 ```
 
-```{r}
-df_wash_3 %>% 
-  filter(IFs_var == 'Shared_Sanitation')
-```
-
-
-```{r}
+```{r wash_2017, include=TRUE}
 wash_2017 <- readxl::read_xlsx('.//data/wash_2017.xlsx', 
                                sheet='data') %>% 
   gather(IFs_var, `2017`, 4:7)
@@ -60,15 +54,10 @@ wash_total <- left_join(x=df_wash_3 %>%
   write_csv(., './/data_output/sanitation_table.csv')
 ```
 
-```{r}
+```{r water_2017, include=TRUE}
 water_2017 <- readxl::read_xlsx('.//data/wash_2017.xlsx', 
                                sheet='data_water') %>% 
   gather(IFs_var, `2017`, 4:6)
-
-anti_join(x=df_wash_3 %>% 
-                          filter(wash_type == 'Water'),
-          y=water_2017,
-          by='state')
 
 left_join(x=df_wash_3 %>% 
             filter(wash_type == 'Water'),
@@ -76,6 +65,4 @@ left_join(x=df_wash_3 %>%
           by=c('state', 'IFs_var')) %>% 
   select(state_ifs, IFs_var, `2009`, `2017`) %>% 
   write_csv(., './/data_output/water_table.csv')
-
 ```
-
